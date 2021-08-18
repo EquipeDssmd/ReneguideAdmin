@@ -6,10 +6,10 @@ export default {
   columns: {
     title: 'Title',
     articles: 'Articles',
-    color: 'Color'
+    color: 'Color',
+    content: 'Content'
   },
   actions: {
     view: 'View'
   }
-
 }

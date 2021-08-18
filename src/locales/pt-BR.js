@@ -6,7 +6,8 @@ export default {
   columns: {
     title: 'Título',
     articles: 'Artigos',
-    color: 'cor'
+    color: 'cor',
+    content: 'Eixo temático'
   },
   actions: {
     view: 'Visualizar'

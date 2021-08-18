@@ -1,10 +1,34 @@
 <template>
   <a-layout>
-    <div
-      class="box"
-      :style="{ background: 'rgb(255, 255, 247)' }"
-    >
-      {{$route.params.id}}
+    <div v-if="data !== []">
+      <div
+        class="box"
+        :style="{ background: 'rgb(255, 255, 247)' }"
+      >
+        <a-descriptions :title="$t('columns.content')">
+          <a-descriptions-item :label="$t('columns.title')">
+            {{data.title}}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('columns.color')">
+            {{data.color}}
+          </a-descriptions-item>
+        </a-descriptions>
+      </div>
+
+      <div
+        class="box"
+        :style="{ background: 'rgb(255, 255, 247)' }"
+      >
+        <h1>{{$t('columns.articles')}}</h1>
+        <a-card
+          v-for="article in data.articles"
+          :title="article.title"
+          :bordered="false" style="width: 25%"
+        >
+          <p>{{article.title}}</p>
+          <p>{{article.infographic}}</p>
+        </a-card>
+      </div>
     </div>
   </a-layout>
 </template>
@@ -14,31 +38,35 @@ import { mapActions, mapState } from 'vuex'
 
 
 export default {
+  data () {
+    return {
+      data: []
+    }
+  },
   mounted() {
-    //this.fetchData()
+    this.fetchData()
   },
   computed: {
-    ...mapState(['contents']),
+    contents: {
+      get () {
+        return this.$store.state.contents
+      },
+      set (newValue) {
+        return this.setContents(newValue)
+      }
+    },
   },
   methods:{
     ...mapActions(['setContents']),
     fetchData(){
-      this.$fire.firestore.collection("contents")
+      this.$fire.firestore.collection("contents").doc(this.$route.params.id)
       .get()
-      .then((querySnapshot) => {
-          let newContents = [];
-          querySnapshot.forEach((doc) => {
-            let data = doc.data()
-            data["id"] = doc.id
-            newContents.push(data);
-          });
-          this.setContents(newContents)
+      .then((doc) => {
+        if (doc.exists) {
+          this.data = doc.data()
+        }
       })
-      .catch((error) => {
-          console.log("Error getting documents: ", error);
-      });
-
-      }
+    }
 
   }
 }
