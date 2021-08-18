@@ -1,5 +1,13 @@
 # ReneguideAdmin
 
+## Project
+
+```bash
+ Admin do Projeto Integrado 2 - https://reneguide.web.app
+
+ Desenvolvido em Nuxt.js
+```
+
 ## Build Setup
 
 ```bash
