@@ -1,0 +1,31 @@
+{
+  "name": "ReneguideAdmin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@nuxtjs/firebase": "^7.6.1",
+    "ant-design-vue": "^1.7.6",
+    "cookie-universal-nuxt": "^2.1.5",
+    "cookieparser": "^0.1.0",
+    "core-js": "^3.15.1",
+    "firebase": "^8.9.1",
+    "js-cookie": "^3.0.0",
+    "jwt-decode": "^3.1.2",
+    "nuxt": "^2.15.7",
+    "nuxt-i18n": "^6.28.1"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.2.1",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^27.0.5",
+    "jest": "^27.0.5",
+    "vue-jest": "^3.0.4"
+  }
+}
