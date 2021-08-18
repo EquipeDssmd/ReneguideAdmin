@@ -2,21 +2,23 @@
   <a-layout>
     <div
       class="box"
-      :style="{ background: 'rgb(255, 255, 247)' }"
     >
       <contents-table />
     </div>
+    <content-modal/>
   </a-layout>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import ContentsTable from '@/components/ContentsTable.vue'
+import ContentModal from '@/components/ContentModal.vue'
 
 
 export default {
   components: {
-    ContentsTable
+    ContentsTable,
+    ContentModal
   },
   mounted() {
     this.fetchData()

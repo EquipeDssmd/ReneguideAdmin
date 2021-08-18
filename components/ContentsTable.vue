@@ -16,7 +16,10 @@
         {{text.length}}
       </span>
       <span slot="actions" slot-scope="id" class="test">
-        <a-button><a :style="{fontSize: '20px'}" :href="contentUrl(id)">{{ $t('actions.view') }}</a></a-button>
+        <a-button
+          :style="{fontSize: '20px'}"
+          @click="viewContentModal(id)"
+        >{{ $t('actions.view') }}</a-button>
       </span>
     </a-table>
   </div>
@@ -45,11 +48,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['contents']),
+    ...mapState(['contents', 'currentContentId', 'contentModalVisible'])
   },
   methods: {
-    contentUrl(id){
-      return '/contents/'+id
+    ...mapActions(['setContentModalVisible', 'setCurrentContentId']),
+    viewContentModal(id){
+      this.setCurrentContentId(id)
+      this.setContentModalVisible(true)
     }
   }
 }

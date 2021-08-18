@@ -3,7 +3,6 @@
     <div v-if="data !== []">
       <div
         class="box"
-        :style="{ background: 'rgb(255, 255, 247)' }"
       >
         <a-descriptions :title="$t('columns.content')">
           <a-descriptions-item :label="$t('columns.title')">
@@ -17,17 +16,23 @@
 
       <div
         class="box"
-        :style="{ background: 'rgb(255, 255, 247)' }"
       >
-        <h1>{{$t('columns.articles')}}</h1>
-        <a-card
+        <div
           v-for="article in data.articles"
-          :title="article.title"
-          :bordered="false" style="width: 25%"
+          :key="article"
         >
-          <p>{{article.title}}</p>
-          <p>{{article.infographic}}</p>
-        </a-card>
+          <a-card>
+          <a-descriptions 
+            :title="$t('columns.articles')">
+            <a-descriptions-item :label="$t('columns.title')">
+              {{article.title}}
+            </a-descriptions-item>
+            <a-descriptions-item :label="$t('columns.infographic')">
+              {{data.infographic}}
+            </a-descriptions-item>
+          </a-descriptions>
+          </a-card>
+        </div>
       </div>
     </div>
   </a-layout>
@@ -46,7 +51,16 @@ export default {
   mounted() {
     this.fetchData()
   },
+
+  watch: {
+    currentContentId (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.fetchData()
+      }
+    }
+  },
   computed: {
+    ...mapState(['currentContentId']),
     contents: {
       get () {
         return this.$store.state.contents
@@ -59,7 +73,7 @@ export default {
   methods:{
     ...mapActions(['setContents']),
     fetchData(){
-      this.$fire.firestore.collection("contents").doc(this.$route.params.id)
+      this.$fire.firestore.collection("contents").doc(this.currentContentId)
       .get()
       .then((doc) => {
         if (doc.exists) {
