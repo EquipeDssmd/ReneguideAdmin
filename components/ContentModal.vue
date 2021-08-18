@@ -7,8 +7,12 @@
     @cancel="handleCancel"
     :width="1000"
   >
-    <content-data/>
-    <content-edit/>
+    <content-data
+      ref="contentData"
+    />
+    <content-edit
+      @contentUpdated="fetchData"
+    />
   </a-modal>
 
 </template>
@@ -33,7 +37,7 @@ export default {
     visible: {
       get () { return this.$store.state.contentModalVisible },
       set (value) {
-        this.$store.dispatch('setRealocationModalVisible', value)
+        this.$store.dispatch('setContentModalVisible', value)
       }
     }
   },
@@ -44,6 +48,10 @@ export default {
     },
     handleCancel () {
       this.setContentModalVisible(false)
+    },
+    fetchData (){
+      this.$emit('contentUpdated')
+      this.$refs.contentData.fetchData()
     }
   }
 }

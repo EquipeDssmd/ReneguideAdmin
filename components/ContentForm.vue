@@ -2,23 +2,18 @@
   <div
     v-if="visible"
   >
-    <a-form layout="horizontal">
+    <a-form :form="form" layout="horizontal" @submit="handleSubmit" >
       <a-form-item
-        :label="$t('columns.title')"
+        v-for="field in selectFields"
+        :key="field.label"
+        :label="field.label"
         :label-col=" { span: 4 }"
         :wrapper-col="{ span: 14, offset: 4 }"
       >
-        <a-input placeholder="input placeholder" />
-      </a-form-item>
-      <a-form-item
-        :label="$t('columns.color')"
-        :label-col=" { span: 4 }"
-        :wrapper-col="{ span: 14, offset: 4 }"
-      >
-        <a-input placeholder="input placeholder" />
+        <a-input v-decorator="field.decorator" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 8 }">
-        <a-button type="primary">
+        <a-button type="primary" html-type="submit">
           Submit
         </a-button>
       </a-form-item>
@@ -40,6 +35,7 @@ export default {
   data () {
     return {
       data: [],
+      form: this.$form.createForm(this, { name: 'horizontal_login' }),
     }
   },
   mounted() {
@@ -55,6 +51,12 @@ export default {
   },
   computed: {
     ...mapState(['currentContentId']),
+    selectFields() {
+      return [
+        { label: this.$t('columns.title'), decorator: this.decorator('title', this.data.title)},
+        { label: this.$t('columns.color'), decorator: this.decorator('color', this.data.color)},
+      ]
+    }
   },
   methods:{
     fetchData(){
@@ -66,6 +68,27 @@ export default {
         }
       })
     },
+    handleSubmit(e){
+      e.preventDefault();
+      this.form.validateFields((error, values) => {
+        this.updateData(values);
+      });
+    },
+    decorator(label, defaultValue) {
+      return [label, { initialValue: defaultValue }]
+    },
+    updateData(values){
+      var docRef = this.$fire.firestore.collection("contents").doc(this.currentContentId);
+
+      return docRef.update(values)
+      .then(() => {
+        this.$message.success(this.$t('messages.success.update_content'));
+        this.$emit('contentUpdated')
+      })
+      .catch((error) => {
+        this.$message.error(this.$t('messages.error') +':  '+ error.message);
+      });
+    }
   }
 }
 </script>

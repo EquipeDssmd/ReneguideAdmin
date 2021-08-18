@@ -1,7 +1,7 @@
 export default {
   login: {
-    sign_in: 'Entrar',
-    password: 'Senha'
+    sign_in: 'Sign in',
+    password: 'Password'
   },
   columns: {
     title: 'Title',
@@ -14,5 +14,11 @@ export default {
     view: 'View',
     edit: 'Edit'
   },
-  null: 'Not registered'
+  null: 'Not registered',
+  messages: {
+    success: {
+      update_content: 'Content updated succesfully'
+    },
+    error: 'Something went wrong'
+  }
 }

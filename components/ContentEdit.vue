@@ -9,6 +9,7 @@
       </a-button>
       <content-form 
         :visible="visible"
+        @contentUpdated="contentUpdated"
       />
     </div>
   </a-layout>
@@ -29,42 +30,14 @@ export default {
     }
   },
   mounted() {
-    this.fetchData()
-  },
-
-  watch: {
-    currentContentId (newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.fetchData()
-      }
-    }
-  },
-  computed: {
-    ...mapState(['currentContentId']),
-    contents: {
-      get () {
-        return this.$store.state.contents
-      },
-      set (newValue) {
-        return this.setContents(newValue)
-      }
-    }
   },
   methods:{
-    ...mapActions(['setContents']),
-    fetchData(){
-      this.$fire.firestore.collection("contents").doc(this.currentContentId)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          this.data = doc.data()
-        }
-      })
-    },
     changeVisibility() {
       this.visible = !this.visible;
+    },
+    contentUpdated() {
+      this.$emit('contentUpdated')
     }
-
   }
 }
 </script>

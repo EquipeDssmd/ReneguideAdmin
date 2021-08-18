@@ -15,4 +15,10 @@ export default {
     edit: 'Editar'
   },
   null: 'Não consta',
+  messages: {
+    success: {
+      update_content: 'Eixo temático atualizado com sucesso'
+    },
+    error: 'Ocorreu um erro'
+  }
 }

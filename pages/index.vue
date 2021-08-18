@@ -5,7 +5,9 @@
     >
       <contents-table />
     </div>
-    <content-modal/>
+    <content-modal
+      @contentUpdated="fetchData"
+    />
   </a-layout>
 </template>
 
@@ -41,7 +43,7 @@ export default {
           this.setContents(newContents)
       })
       .catch((error) => {
-          console.log("Error getting documents: ", error);
+        this.$message.error(this.$t('messages.error')+ ':  '+ error.message)
       });
 
       }
