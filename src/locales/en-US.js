@@ -7,9 +7,12 @@ export default {
     title: 'Title',
     articles: 'Articles',
     color: 'Color',
-    content: 'Content'
+    content: 'Content',
+    infographic: 'Infographic url'
   },
   actions: {
-    view: 'View'
-  }
+    view: 'View',
+    edit: 'Edit'
+  },
+  null: 'Not registered'
 }

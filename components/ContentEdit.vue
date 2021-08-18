@@ -1,51 +1,31 @@
 <template>
   <a-layout>
     <div v-if="data !== []">
-      <div
-        class="box"
+      <a-button
+        block
+        @click="changeVisibility"
       >
-        <a-descriptions :title="$t('columns.content')">
-          <a-descriptions-item :label="$t('columns.title')">
-            {{data.title}}
-          </a-descriptions-item>
-          <a-descriptions-item :label="$t('columns.color')">
-            {{data.color}}
-          </a-descriptions-item>
-        </a-descriptions>
-      </div>
-
-      <div
-        class="box"
-      >
-        <div
-          v-for="article in data.articles"
-          :key="article"
-        >
-          <a-card>
-          <a-descriptions 
-            :title="$t('columns.articles')">
-            <a-descriptions-item :label="$t('columns.title')">
-              {{article.title}}
-            </a-descriptions-item>
-            <a-descriptions-item :label="$t('columns.infographic')">
-              {{data.infographic || $t('null')}}
-            </a-descriptions-item>
-          </a-descriptions>
-          </a-card>
-        </div>
-      </div>
+          {{$t('actions.edit')}}
+      </a-button>
+      <content-form 
+        :visible="visible"
+      />
     </div>
   </a-layout>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
-
+import ContentForm from '@/components/ContentForm.vue'
 
 export default {
+  components: {
+    ContentForm
+  },
   data () {
     return {
-      data: []
+      data: [],
+      visible: false
     }
   },
   mounted() {
@@ -68,7 +48,7 @@ export default {
       set (newValue) {
         return this.setContents(newValue)
       }
-    },
+    }
   },
   methods:{
     ...mapActions(['setContents']),
@@ -80,6 +60,9 @@ export default {
           this.data = doc.data()
         }
       })
+    },
+    changeVisibility() {
+      this.visible = !this.visible;
     }
 
   }

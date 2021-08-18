@@ -6,10 +6,13 @@ export default {
   columns: {
     title: 'Título',
     articles: 'Artigos',
-    color: 'cor',
-    content: 'Eixo temático'
+    color: 'Cor',
+    content: 'Eixo temático',
+    infographic: 'Link do Infografico'
   },
   actions: {
-    view: 'Visualizar'
-  }
+    view: 'Visualizar',
+    edit: 'Editar'
+  },
+  null: 'Não consta',
 }

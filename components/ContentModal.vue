@@ -7,7 +7,8 @@
     @cancel="handleCancel"
     :width="1000"
   >
-    <content-data />
+    <content-data/>
+    <content-edit/>
   </a-modal>
 
 </template>
@@ -15,10 +16,12 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import ContentData from '@/components/ContentData.vue'
+import ContentEdit from '@/components/ContentEdit.vue'
 
 export default {
   components: {
-    ContentData
+    ContentData,
+    ContentEdit
   },
   data () {
     return {
