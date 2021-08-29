@@ -2,50 +2,73 @@
   <a-layout>
     <div v-if="data !== []">
       <div
-        class="box"
       >
-        <a-descriptions :title="$t('columns.content')">
-          <a-descriptions-item :label="$t('columns.title')">
-            {{data.title}}
-          </a-descriptions-item>
-          <a-descriptions-item :label="$t('columns.color')">
-            {{data.color}}
-          </a-descriptions-item>
-        </a-descriptions>
-      </div>
+        <a-row >
+          <div
+            v-if="!editVisible"
+          >
+            <a-col :span="23">
 
-      <div
-        class="box"
-      >
+                <a-descriptions class="box" :title="$t('columns.content')">
+                  <a-descriptions-item :label="$t('columns.title')">
+                    {{data.title}}
+                  </a-descriptions-item>
+                  <a-descriptions-item :label="$t('columns.color')">
+                    {{data.color}}
+                  </a-descriptions-item>
+                </a-descriptions>
+            </a-col>
+          
+          <a-col :span="1">
+              <a-button class="edit-button" type="primary" block icon="edit" size="large" @click="changeVisibility"/>
+          </a-col>
+        </div>
+        <div v-else>
+          <content-form 
+            :visible="editVisible"
+            @contentUpdated="contentUpdated"
+          />
+        </div>
+        </a-row>
+      
+      </div>
+        <a-card
+            :title="$t('columns.articles')"
+        >
         <div
           v-for="article in data.articles"
           :key="article"
         >
           <a-card>
-          <a-descriptions 
-            :title="$t('columns.articles')">
-            <a-descriptions-item :label="$t('columns.title')">
+          <a-descriptions>
+            <a-descriptions-item :label="$t('columns.title')" span="2">
               {{article.title}}
             </a-descriptions-item>
-            <a-descriptions-item :label="$t('columns.infographic')">
+            <a-descriptions-item :label="$t('columns.infographic')"  span="2">
               {{data.infographic || $t('null')}}
             </a-descriptions-item>
           </a-descriptions>
           </a-card>
         </div>
-      </div>
+      </a-card>
     </div>
   </a-layout>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import randomstring from 'randomstring'
 
+import ContentForm from '@/components/ContentForm.vue'
 
 export default {
+  components: {
+    ContentForm
+  },
   data () {
     return {
-      data: []
+      data: [],
+      editVisible: false
     }
   },
   mounted() {
@@ -80,6 +103,14 @@ export default {
           this.data = doc.data()
         }
       })
+    },
+
+    changeVisibility() {
+      this.editVisible = !this.editVisible;
+    },
+    contentUpdated() {
+      this.changeVisibility()
+      this.$emit('contentUpdated')
     }
 
   }
@@ -96,5 +127,9 @@ export default {
   margin: 12px 8px;
   border-radius: 4px;
 }
+.edit-button {
+  margin-top:  45px;
+}
+
 
 </style>

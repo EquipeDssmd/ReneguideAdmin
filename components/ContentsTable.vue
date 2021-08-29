@@ -13,7 +13,7 @@
         <div class="content-color" :style="{'background-color': `${text}`}" />
       </span>
       <span slot="articles" slot-scope="text" class="test">
-        {{text.length}}
+        {{ (text || []).length}}
       </span>
       <span slot="actions" slot-scope="id" class="test">
         <a-button

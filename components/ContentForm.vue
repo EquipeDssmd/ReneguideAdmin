@@ -23,11 +23,15 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-
+import randomstring from 'randomstring'
 
 export default {
   props: {
     visible: {
+      type: Boolean,
+      default: false
+    },
+    new: {
       type: Boolean,
       default: false
     }
@@ -39,7 +43,9 @@ export default {
     }
   },
   mounted() {
-    this.fetchData()
+    if (!this.new){
+      this.fetchData()
+    }
   },
 
   watch: {
@@ -71,7 +77,11 @@ export default {
     handleSubmit(e){
       e.preventDefault();
       this.form.validateFields((error, values) => {
-        this.updateData(values);
+        if (this.new) {
+          this.setData(values);
+        } else {
+          this.updateData(values);
+        }
       });
     },
     decorator(label, defaultValue) {
@@ -81,6 +91,18 @@ export default {
       var docRef = this.$fire.firestore.collection("contents").doc(this.currentContentId);
 
       return docRef.update(values)
+      .then(() => {
+        this.$message.success(this.$t('messages.success.update_content'));
+        this.$emit('contentUpdated')
+      })
+      .catch((error) => {
+        this.$message.error(this.$t('messages.error') +':  '+ error.message);
+      });
+    },
+    setData(values){
+      var docRef = this.$fire.firestore.collection("contents").doc(randomstring.generate());
+
+      return docRef.set(Object.assign(values, {'articles': []}))
       .then(() => {
         this.$message.success(this.$t('messages.success.update_content'));
         this.$emit('contentUpdated')

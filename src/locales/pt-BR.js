@@ -3,6 +3,10 @@ export default {
     sign_in: 'Login',
     password: 'Senha'
   },
+  menu: {
+    contents: 'Conteudos',
+    logout: 'Sair'
+  },
   columns: {
     title: 'Título',
     articles: 'Artigos',

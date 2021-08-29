@@ -2,6 +2,7 @@ const state = () => ({
   user: null,
   contents: [],
   contentModalVisible: false,
+  newContentModalVisible: false,
   currentContentId: ""
 })
 
@@ -14,6 +15,9 @@ const mutations = {
   },
   SET_CONTENT_MODAL_VISIBLE(state, value){
     state.contentModalVisible = value;
+  },
+  SET_NEW_CONTENT_MODAL_VISIBLE(state, value){
+    state.newContentModalVisible = value;
   },
   SET_CURRENT_CONTENT_ID(state, value){
     state.currentContentId = value;
@@ -46,6 +50,9 @@ const actions = {
   },
   setContentModalVisible({commit}, value){
     commit('SET_CONTENT_MODAL_VISIBLE', value)
+  },
+  setNewContentModalVisible({commit}, value){
+    commit('SET_NEW_CONTENT_MODAL_VISIBLE', value)
   },
   setCurrentContentId({commit}, value){
     commit('SET_CURRENT_CONTENT_ID', value)

@@ -3,9 +3,15 @@
     <div
       class="box"
     >
+    <a-button class="editable-add-btn" @click="handleAdd">
+      Add
+    </a-button>
       <contents-table />
     </div>
     <content-modal
+      @contentUpdated="fetchData"
+    />
+    <new-content-modal
       @contentUpdated="fetchData"
     />
   </a-layout>
@@ -15,12 +21,14 @@
 import { mapActions, mapState } from 'vuex'
 import ContentsTable from '@/components/ContentsTable.vue'
 import ContentModal from '@/components/ContentModal.vue'
-
+import NewContentModal from '@/components/NewContentModal.vue'
+import randomstring from 'randomstring'
 
 export default {
   components: {
     ContentsTable,
-    ContentModal
+    ContentModal,
+    NewContentModal
   },
   mounted() {
     this.fetchData()
@@ -29,7 +37,7 @@ export default {
     ...mapState(['contents']),
   },
   methods:{
-    ...mapActions(['setContents']),
+    ...mapActions(['setContents', 'setCurrentContentId', 'setContentModalVisible', 'setNewContentModalVisible']),
     fetchData(){
       this.$fire.firestore.collection("contents")
       .get()
@@ -46,6 +54,9 @@ export default {
         this.$message.error(this.$t('messages.error')+ ':  '+ error.message)
       });
 
+      },
+      handleAdd() {
+        this.setNewContentModalVisible(true)
       }
 
   }

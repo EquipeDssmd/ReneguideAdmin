@@ -7,9 +7,9 @@
     @cancel="handleCancel"
     :width="1000"
   >
-    <content-data
-      ref="contentData"
-      @contentUpdated="fetchData"
+    <content-form
+      :visible="true"
+      :new="true"
     />
   </a-modal>
 
@@ -17,11 +17,11 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import ContentData from '@/components/ContentData.vue'
+import ContentForm from '@/components/ContentForm.vue'
 
 export default {
   components: {
-    ContentData,
+    ContentForm
   },
   data () {
     return {
@@ -29,21 +29,20 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentContentId']),
     visible: {
-      get () { return this.$store.state.contentModalVisible },
+      get () { return this.$store.state.newContentModalVisible },
       set (value) {
-        this.$store.dispatch('setContentModalVisible', value)
+        this.$store.dispatch('setNewContentModalVisible', value)
       }
     }
   },
   methods: {
-    ...mapActions(['setContentModalVisible']),
+    ...mapActions(['setNewContentModalVisible']),
     handleOk () {
-      this.setContentModalVisible(false)
+      this.setNewContentModalVisible(false)
     },
     handleCancel () {
-      this.setContentModalVisible(false)
+      this.setNewContentModalVisible(false)
     },
     fetchData (){
       this.$emit('contentUpdated')
