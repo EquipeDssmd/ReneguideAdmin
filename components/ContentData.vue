@@ -1,56 +1,62 @@
 <template>
   <a-layout>
     <div v-if="data !== []">
-      <div
-      >
-        <a-row >
-          <div
-            v-if="!editVisible"
-          >
-            <a-col :span="23">
-
-                <a-descriptions class="box" :title="$t('columns.content')">
-                  <a-descriptions-item :label="$t('columns.title')">
-                    {{data.title}}
-                  </a-descriptions-item>
-                  <a-descriptions-item :label="$t('columns.color')">
-                    {{data.color}}
-                  </a-descriptions-item>
-                </a-descriptions>
-            </a-col>
-          
+      <a-row>
+        <!-- dados principais -->
+        <div
+          v-if="!editVisible"
+        >
+          <a-col :span="23">
+            <a-descriptions class="box" :title="$t('columns.content')">
+              <a-descriptions-item :label="$t('columns.title')">
+                {{data.title}}
+              </a-descriptions-item>
+              <a-descriptions-item :label="$t('columns.color')">
+                {{data.color}}
+              </a-descriptions-item>
+            </a-descriptions>
+          </a-col>
+        
           <a-col :span="1">
-              <a-button class="edit-button" type="primary" block icon="edit" size="large" @click="changeVisibility"/>
+            <a-button class="edit-button" type="primary" block icon="edit" size="large" @click="changeVisibility"/>
           </a-col>
         </div>
+
         <div v-else>
           <content-form 
             :visible="editVisible"
             @contentUpdated="contentUpdated"
           />
         </div>
-        </a-row>
-      
-      </div>
-        <a-card
-            :title="$t('columns.articles')"
-        >
+      </a-row>
+    
+      <!-- artigos -->
+      <a-card
+        v-if="data.articles"
+        :title="$t('columns.articles')"
+      >
+        <div v-if="data.articles.length === 0">
+          {{$t('null')}}
+        </div>
         <div
           v-for="article in data.articles"
           :key="article"
         >
           <a-card>
-          <a-descriptions>
-            <a-descriptions-item :label="$t('columns.title')" span="2">
-              {{article.title}}
-            </a-descriptions-item>
-            <a-descriptions-item :label="$t('columns.infographic')"  span="2">
-              {{data.infographic || $t('null')}}
-            </a-descriptions-item>
-          </a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item :label="$t('columns.title')" span="2">
+                {{article.title}}
+              </a-descriptions-item>
+              <a-descriptions-item :label="$t('columns.infographic')"  span="2">
+                {{article.infographic || $t('null')}}
+              </a-descriptions-item>
+            </a-descriptions>
           </a-card>
         </div>
+        <new-article v-if="articleVisible" @contentUpdated="newArticleSaved"/>
+        <a-button type="primary" icon="plus" @click="changeArticleVisibility" block > {{$t('actions.add_article')}}</a-button>
       </a-card>
+
     </div>
   </a-layout>
 </template>
@@ -60,15 +66,18 @@ import { mapActions, mapState } from 'vuex'
 import randomstring from 'randomstring'
 
 import ContentForm from '@/components/ContentForm.vue'
+import NewArticle from '@/components/NewArticle.vue'
 
 export default {
   components: {
-    ContentForm
+    ContentForm,
+    NewArticle
   },
   data () {
     return {
       data: [],
-      editVisible: false
+      editVisible: false,
+      articleVisible: false
     }
   },
   mounted() {
@@ -104,12 +113,18 @@ export default {
         }
       })
     },
-
     changeVisibility() {
       this.editVisible = !this.editVisible;
     },
+    changeArticleVisibility() {
+      this.articleVisible = !this.articleVisible;
+    },
     contentUpdated() {
       this.changeVisibility()
+      this.$emit('contentUpdated')
+    },
+    newArticleSaved() {
+      this.changeArticleVisibility()
       this.$emit('contentUpdated')
     }
 

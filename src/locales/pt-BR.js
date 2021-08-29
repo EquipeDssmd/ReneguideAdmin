@@ -19,13 +19,15 @@ export default {
   actions: {
     view: 'Visualizar',
     edit: 'Editar',
-    delete: 'Deletar'
+    delete: 'Deletar',
+    add_article: 'Adicionar artigo'
   },
   null: 'Não consta',
   messages: {
     success: {
       update_content: 'Eixo temático atualizado com sucesso',
-      delete_content: 'Eixo temático deletado com sucesso'
+      delete_content: 'Eixo temático deletado com sucesso',
+      add_article: 'Artigo adicionado com sucesso'
     },
     confirm: {
       delete: 'Tem certeza que quer deletar o eixo?'
