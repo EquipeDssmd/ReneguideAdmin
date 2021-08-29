@@ -17,9 +17,21 @@
       </span>
       <span slot="actions" slot-scope="id" class="test">
         <a-button
-          :style="{fontSize: '20px'}"
           @click="viewContentModal(id)"
-        >{{ $t('actions.view') }}</a-button>
+        >
+          {{ $t('actions.view') }}
+        </a-button>
+
+        <a-popconfirm placement="topRight" :ok-text="$t('yes')" :cancel-text="$t('no')" @confirm="deleteContent(id)">
+          <template slot="title">
+            <p>
+            {{ $t('messages.confirm.delete') }}
+          </p>
+          </template>
+          <a-button type="danger" ghost>
+            {{ $t('actions.delete') }}
+          </a-button>
+      </a-popconfirm>
       </span>
     </a-table>
   </div>
@@ -55,6 +67,16 @@ export default {
     viewContentModal(id){
       this.setCurrentContentId(id)
       this.setContentModalVisible(true)
+    },
+    deleteContent(id) {
+
+      this.$fire.firestore.collection("contents").doc(id).delete().then(() => {
+        this.$message.success(this.$t('messages.success.delete_content'));
+        this.$emit('contentUpdated')
+      })
+      .catch((error) => {
+        this.$message.error(this.$t('messages.error') +':  '+ error.message);
+      });
     }
   }
 }

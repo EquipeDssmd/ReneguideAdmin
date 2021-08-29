@@ -1,4 +1,6 @@
 export default {
+  yes: 'sim',
+  no: 'não',
   login: {
     sign_in: 'Login',
     password: 'Senha'
@@ -16,12 +18,17 @@ export default {
   },
   actions: {
     view: 'Visualizar',
-    edit: 'Editar'
+    edit: 'Editar',
+    delete: 'Deletar'
   },
   null: 'Não consta',
   messages: {
     success: {
-      update_content: 'Eixo temático atualizado com sucesso'
+      update_content: 'Eixo temático atualizado com sucesso',
+      delete_content: 'Eixo temático deletado com sucesso'
+    },
+    confirm: {
+      delete: 'Tem certeza que quer deletar o eixo?'
     },
     error: 'Ocorreu um erro'
   }

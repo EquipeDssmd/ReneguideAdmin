@@ -6,7 +6,9 @@
     <a-button class="editable-add-btn" @click="handleAdd">
       Add
     </a-button>
-      <contents-table />
+      <contents-table 
+        @contentUpdated="fetchData"
+      />
     </div>
     <content-modal
       @contentUpdated="fetchData"
