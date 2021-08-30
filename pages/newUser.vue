@@ -14,7 +14,7 @@
           </a-input>
         </a-form-item>
         <a-form-item class="marginless">
-          <a-button type="primary" html-type="submit" class="login__submit" @click="userLogin">
+          <a-button type="primary" html-type="submit" class="login__submit" @click="createLogin">
             {{ $t('login.sign_in') }}
           </a-button>
         </a-form-item>
@@ -40,12 +40,17 @@ export default {
     }
   },
   methods: {
-    async userLogin () {
-      try {
-        await this.$fire.auth.signInWithEmailAndPassword(this.login.sign_in.email, this.login.sign_in.password)
-      } catch (err) {
-        this.$message.error(err +'That password was incorrect. Please try again.')
-      }
+    createLogin () {
+        this.$fire.auth.createUserWithEmailAndPassword(this.login.sign_in.email, this.login.sign_in.password)
+        .then((userCredential) => {
+          // Signed in
+          var user = userCredential.user;
+          // ...
+          this.$message.success('sucesso!' )
+        })
+        .catch((err) => {
+          this.$message.error(err)
+      })
     }
   }
 }

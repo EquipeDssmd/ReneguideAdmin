@@ -14,7 +14,7 @@
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 8 }">
         <a-button type="primary" html-type="submit">
-          Submit
+          {{$t('actions.add')}}
         </a-button>
       </a-form-item>
     </a-form>

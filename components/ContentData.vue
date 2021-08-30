@@ -39,19 +39,15 @@
           {{$t('null')}}
         </div>
         <div
-          v-for="article in data.articles"
+          v-for="article, index in data.articles"
           :key="article"
         >
-          <a-card>
-            <a-descriptions>
-              <a-descriptions-item :label="$t('columns.title')" span="2">
-                {{article.title}}
-              </a-descriptions-item>
-              <a-descriptions-item :label="$t('columns.infographic')"  span="2">
-                {{article.infographic || $t('null')}}
-              </a-descriptions-item>
-            </a-descriptions>
-          </a-card>
+          <article-data
+            :article="article"
+            @edit="editArticle(index, $event)"
+            @delete="deleteArticle(index)"
+          />
+          
         </div>
         <new-article v-if="articleVisible" @contentUpdated="newArticleSaved"/>
         <a-button type="primary" icon="plus" @click="changeArticleVisibility" block > {{$t('actions.add_article')}}</a-button>
@@ -66,12 +62,14 @@ import { mapActions, mapState } from 'vuex'
 import randomstring from 'randomstring'
 
 import ContentForm from '@/components/ContentForm.vue'
+import ArticleData from '@/components/ArticleData.vue'
 import NewArticle from '@/components/NewArticle.vue'
 
 export default {
   components: {
     ContentForm,
-    NewArticle
+    NewArticle,
+    ArticleData
   },
   data () {
     return {
@@ -111,6 +109,32 @@ export default {
         if (doc.exists) {
           this.data = doc.data()
         }
+      })
+    },
+    editArticle(index, value){
+      let articles = this.data.articles
+      articles[index] = value;
+      this.$fire.firestore.collection("contents").doc(this.currentContentId)
+      .update({"articles": articles})
+      .then(()=>{
+
+        this.$message.success(this.$t('messages.success.edit_article'))
+        this.$emit('contentUpdated')
+      })
+      .catch((err) => {
+        this.$message.error(err)
+      })
+    },
+    deleteArticle(index){
+      let removedArticle = this.data.articles[index];
+      this.$fire.firestore.collection("contents").doc(this.currentContentId)
+      .update({'articles': this.$fireModule.firestore.FieldValue.arrayRemove(removedArticle)})
+      .then(()=>{
+        this.$message.success(this.$t('messages.success.deleted_article'))
+        this.$emit('contentUpdated')
+      })
+      .catch((err) => {
+        this.$message.error(err)
       })
     },
     changeVisibility() {

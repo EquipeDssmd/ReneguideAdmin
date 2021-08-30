@@ -4,7 +4,7 @@
       class="box"
     >
     <a-button class="editable-add-btn" @click="handleAdd">
-      Add
+      {{$t('actions.add')}}
     </a-button>
       <contents-table 
         @contentUpdated="fetchData"
