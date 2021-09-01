@@ -6,8 +6,15 @@
         <div v-else>{{article.title}}</div>
       </a-descriptions-item>
       <a-descriptions-item :label="$t('columns.infographic')" span="4">
-        <a-input v-if="edit" v-model="data.infographic"/>
-        <div class="testeee" v-else>{{article.infographic}}</div>
+        <div
+          v-if="edit"
+        >
+          <a :href="data.infographic">Preview</a>
+          <infographic-upload @pdfUploaded="updateInfographic($event)" />
+        </div>
+        <div v-else>
+          <a :href="article.infographic">Link</a>
+        </div>
       </a-descriptions-item>
       <a-descriptions-item span="2">
 
@@ -23,7 +30,12 @@
 </template>
 
 <script type="text/javascript">
+
+import InfographicUpload from '@/components/InfographicUpload.vue'
 export default {
+  components: {
+    InfographicUpload
+  },
   props: {
     article: {
       type: Object,
@@ -48,6 +60,9 @@ export default {
     },
     changeEdit() {
       this.edit = !this.edit
+    },
+    updateInfographic(newUrl) {
+      this.data.infographic = newUrl;
     },
     editArticle(){
       this.$emit('edit', this.data)

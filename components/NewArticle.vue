@@ -1,13 +1,14 @@
 <template>
   <a-card>
-    <a-descriptions>
-      <a-descriptions-item :label="$t('columns.title')">
+    <a-descriptions :column=8>
+      <a-descriptions-item :label="$t('columns.title')" span="2">
         <a-input v-model="title"/>
       </a-descriptions-item>
-      <a-descriptions-item :label="$t('columns.infographic')">
-        <a-input v-model="infographic"/>
+      <a-descriptions-item :label="$t('columns.infographic')" span="4">
+        <a :href="infographic">Preview</a>
+        <infographic-upload @pdfUploaded="editInfographic($event)"/>
       </a-descriptions-item>
-      <a-descriptions-item >
+      <a-descriptions-item span="2">
     	<a-button type="primary" icon="save" @click="sendData" ghost>{{$t('actions.add_article')}}</a-button>
       </a-descriptions-item>
     </a-descriptions>
@@ -17,7 +18,11 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 
+import InfographicUpload from '@/components/InfographicUpload.vue'
 export default {
+  components: {
+    InfographicUpload
+  },
   data () {
     return {
       title: '',
@@ -37,6 +42,9 @@ export default {
   },
   methods:{
     ...mapActions(['setContents']),
+    editInfographic(newUrl) {
+      this.infographic = newUrl;
+    },
     sendData(){
       this.$fire.firestore.collection("contents").doc(this.currentContentId)
       .update({'articles': this.$fireModule.firestore.FieldValue.arrayUnion(this.currentArticle)})

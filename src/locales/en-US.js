@@ -32,6 +32,7 @@ export default {
       delete_content: 'Content deleted succesfully',
       add_article: 'Article added with success',
       edit_article: 'Article edited with success',
+      upload: 'File uploaded with success',
       deleted_article: 'Article deleted with success',
     },
     confirm: {

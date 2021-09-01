@@ -32,6 +32,7 @@ export default {
       delete_content: 'Eixo temático deletado com sucesso',
       add_article: 'Artigo adicionado com sucesso',
       edit_article: 'Artigo editado com sucesso',
+      upload: 'Arquivo salvo com sucesso!',
       deleted_article: 'Artigo deletado com sucesso',
     },
     confirm: {

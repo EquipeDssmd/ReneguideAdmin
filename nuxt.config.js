@@ -55,6 +55,7 @@ export default {
               // Firestore Settings - currently only works in SPA mode
             }
           },
+          storage: true,
           auth: {
             persistance: 'local',
             initialize: {
